@@ -132,41 +132,52 @@ document.addEventListener('DOMContentLoaded', () => {
         handlePlayerChange();
     }
     
-    function drawWinningLine(combination) {
-        const boardRect = document.getElementById('board').getBoundingClientRect();
-        const cellRect = cells[combination[0]].getBoundingClientRect();
-        const cellCenter = cellRect.width / 2;
-        
-        winningLine.style.width = '280px';
-        winningLine.style.backgroundColor = (currentPlayer === 'X') ? 'var(--accent-color-x)' : 'var(--accent-color-o)';
-        
-        // Horizontal
-        if (combination[0] % 3 === 0 && combination[1] % 3 === 1) { 
-            winningLine.style.transform = 'rotate(0deg)';
-            winningLine.style.top = `${cellRect.top - boardRect.top + cellCenter}px`;
-            winningLine.style.left = '20px';
-        } 
-        // Vertical
-        else if (combination[0] < 3 && combination[1] < 6) { 
-             winningLine.style.transform = 'rotate(90deg)';
-             winningLine.style.left = `${cellRect.left - boardRect.left + cellCenter - 140}px`;
-             winningLine.style.top = '150px';
-        }
-        // Diagonal \
-        else if (combination[0] === 0 && combination[2] === 8) {
-             winningLine.style.width = '380px';
-             winningLine.style.transform = 'rotate(45deg)';
-             winningLine.style.left = '-30px';
-             winningLine.style.top = '150px';
-        }
-        // Diagonal /
-        else { 
-             winningLine.style.width = '380px';
-             winningLine.style.transform = 'rotate(-45deg)';
-             winningLine.style.left = '-30px';
-             winningLine.style.top = '150px';
-        }
-    }
+
+function drawWinningLine(combination) {
+    winningLine.style.display = 'block';
+    winningLine.style.width = '0px'; // Reset width before animation
+    winning-line.style.backgroundColor = (currentPlayer === 'X') ? 'var(--accent-color-x)' : 'var(--accent-color-o)';
+
+    const board = document.getElementById('board');
+    const boardRect = board.getBoundingClientRect();
+    const startCell = cells[combination[0]].getBoundingClientRect();
+    const endCell = cells[combination[2]].getBoundingClientRect();
+
+    const startX = startCell.left + startCell.width / 2 - boardRect.left;
+    const startY = startCell.top + startCell.height / 2 - boardRect.top;
+    const endX = endCell.left + endCell.width / 2 - boardRect.left;
+    const endY = endCell.top + endCell.height / 2 - boardRect.top;
+
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+
+    const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+    const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    winningLine.style.width = `${length}px`;
+    winningLine.style.transformOrigin = '0 0';
+    winningLine.style.transform = `translate(${startX}px, ${startY}px) rotate(${angle}deg)`;
+    winningLine.style.top = '0';
+    winningLine.style.left = '0';
+}
+
+
+// Yeh function bhi update karein taaki line reset ho
+function handleRestartGame() {
+    isGameActive = true;
+    currentPlayer = 'X';
+    gameState = ["", "", "", "", "", "", "", "", ""];
+    statusDisplay.innerText = `${playerNames[currentPlayer]}'s turn`;
+    document.body.className = 'x-turn';
+    cells.forEach(cell => {
+        cell.innerText = '';
+        cell.classList.remove('x', 'o');
+    });
+    // winningLine ko hide karein
+    winningLine.style.width = '0'; 
+    winningLine.style.display = 'none'; // Ise add karein
+    gameOverModal.style.display = 'none';
+}
 
     function handleRestartGame() {
         isGameActive = true;
