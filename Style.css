@@ -1,1 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}
 
+h1 {
+    color: #333;
+}
+
+#game-container {
+    text-align: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cell.x::before {
+    content: 'X';
+    color: #e74c3c;
+}
+
+.cell.o::before {
+    content: 'O';
+    color: #3498db;
+}
+
+.cell:not(.x):not(.o):hover {
+    background-color: #f9f9f9;
+}
+
+.status {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+#restartButton {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#restartButton:hover {
+    background-color: #27ae60;
+}
