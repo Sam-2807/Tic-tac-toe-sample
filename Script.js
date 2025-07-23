@@ -91,4 +91,3 @@ cells.forEach(cell => cell.addEventListener('click', handleCellClick));
 restartButton.addEventListener('click', handleRestartGame);
 
 statusDisplay.innerHTML = currentPlayerTurn();
-
